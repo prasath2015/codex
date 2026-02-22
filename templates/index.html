@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helmet Surveillance AI</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .panel { background: #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .title { margin-top: 0; }
+    img { width: 100%; border-radius: 12px; border: 2px solid #334155; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .stat { background: #0b1222; padding: 12px; border-radius: 10px; }
+    .label { color: #94a3b8; font-size: 14px; }
+    .value { font-size: 28px; font-weight: 700; }
+    .warn { color: #f43f5e; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="panel">
+      <h1 class="title">AI Worker Helmet Surveillance</h1>
+      <p>Live webcam monitoring with automatic no-helmet evidence capture.</p>
+    </div>
+
+    <div class="panel">
+      <img src="/video" alt="Live helmet surveillance stream" />
+    </div>
+
+    <div class="panel stats">
+      <div class="stat">
+        <div class="label">Workers Detected</div>
+        <div class="value" id="workers">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">Without Helmet</div>
+        <div class="value warn" id="violations">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">Alert Captures</div>
+        <div class="value" id="alerts">0</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function refreshStats() {
+      const response = await fetch('/stats');
+      const data = await response.json();
+      document.getElementById('workers').innerText = data.total_people;
+      document.getElementById('violations').innerText = data.without_helmet;
+      document.getElementById('alerts').innerText = data.alerts_triggered;
+    }
+
+    setInterval(refreshStats, 1000);
+    refreshStats();
+  </script>
+</body>
+</html>
